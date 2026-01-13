@@ -6,3 +6,4 @@ squared_numbers = list(map(lambda x: x * x, even_numbers))
 
 for index, value in enumerate(squared_numbers):
     print(index, value)
+
