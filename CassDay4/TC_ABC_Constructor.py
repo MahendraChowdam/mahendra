@@ -12,4 +12,5 @@ class manager(Employee):
         print(self.name,"salary is 50000")
 
 m = manager("ravi")
+
 m.salary()
