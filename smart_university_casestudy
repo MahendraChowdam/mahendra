@@ -1,0 +1,226 @@
+
+class Course:
+    def __init__(self, code, name, credits, faculty):
+        self.code = code
+        self.name = name
+        self.credits = credits
+        self.faculty = faculty
+
+    def __add__(self, other):
+        return self.credits + other.credits
+
+class Department:
+    def __init__(self, dept_id, name):
+        self.dept_id = dept_id
+        self.name = name
+        self.students = []
+        self.faculty = []
+
+    def add_student(self, student):
+        self.students.append(student)
+
+    def add_faculty(self, faculty):
+        self.faculty.append(faculty)
+
+    def get_details(self):
+        print("Department Details")
+        print("--------------------------------")
+        print(f"Department ID : {self.dept_id}")
+        print(f"Department    : {self.name}")
+        print(f"Total Students: {len(self.students)}")
+        print(f"Total Faculty : {len(self.faculty)}")
+
+from models.person import Person
+from utils.descriptors import SalaryDescriptor
+
+class Faculty(Person):
+    salary = SalaryDescriptor()
+
+    def __init__(self, fid, name, department, salary):
+        super().__init__(fid, name, department)
+        self.salary = salary
+
+    def get_details(self):
+        print("Faculty Details")
+        print("--------------------------------")
+        print(f"Name      : {self.name}")
+        print("Role      : Faculty")
+        print(f"Department: {self.department}")
+
+from abc import ABC, abstractmethod
+
+class Person(ABC):
+    def __init__(self, pid, name, department):
+        self.id = pid
+        self.name = name
+        self.department = department
+
+    @abstractmethod
+    def get_details(self):
+        pass
+
+    def __del__(self):
+        print(f"Cleaning up object: {self.name}")
+
+from models.person import Person
+from utils.descriptors import MarksDescriptor
+from utils.decorators import log_execution, time_it
+
+class Student(Person):
+    marks = MarksDescriptor()
+
+    def __init__(self, sid, name, department, semester, marks):
+        super().__init__(sid, name, department)
+        self.semester = semester
+        self.marks = marks
+
+    def get_details(self):
+        print("Student Details")
+        print("--------------------------------")
+        print(f"Name      : {self.name}")
+        print("Role      : Student")
+        print(f"Department: {self.department}")
+
+    @log_execution
+    @time_it
+    def calculate_performance(self):
+        avg = sum(self.marks) / len(self.marks)
+        grade = "A" if avg >= 85 else "B" if avg >= 70 else "C"
+        print(f"Average: {avg:.1f}")
+        print(f"Grade  : {grade}")
+        return avg
+
+    def __gt__(self, other):
+        return self.calculate_performance() > other.calculate_performance()
+
+
+
+import time
+
+def log_execution(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        print(f"[LOG] Method {func.__name__}() executed successfully")
+        return result
+    return wrapper
+
+
+def admin_only(func):
+    def wrapper(role, *args, **kwargs):
+        if role != "admin":
+            print("Access Denied: Admin privileges required")
+            return
+        return func(role, *args, **kwargs)
+    return wrapper
+
+
+def time_it(func):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        print(f"Execution Time: {time.time()-start:.4f} sec")
+        return result
+    return wrapper
+
+class MarksDescriptor:
+    def __set_name__(self, owner, name):
+        self.name = name
+
+    def __get__(self, obj, objtype=None):
+        return obj.__dict__[self.name]
+
+    def __set__(self, obj, value):
+        if all(0 <= m <= 100 for m in value):
+            obj.__dict__[self.name] = value
+        else:
+            raise ValueError("Marks should be between 0 and 100")
+
+
+class SalaryDescriptor:
+    def __get__(self, obj, objtype=None):
+        raise PermissionError("Access Denied: Salary is confidential")
+
+    def __set__(self, obj, value):
+        obj.__dict__["_salary"] = value
+
+def student_generator(students):
+    print("Fetching Student Records...")
+    print("--------------------------------")
+    for s in students:
+        yield f"{s.id} - {s.name}"
+
+class CourseIterator:
+    def __init__(self, courses):
+        self.courses = courses
+        self.index = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index < len(self.courses):
+            course = self.courses[self.index]
+            self.index += 1
+            return course
+        raise StopIteration
+
+
+
+import json
+import csv
+
+def save_students_json(students):
+    data = []
+    for s in students:
+        data.append({
+            "id": s.id,
+            "name": s.name,
+            "department": s.department,
+            "semester": s.semester,
+            "marks": s.marks
+        })
+
+    with open("data/students.json", "w") as f:
+        json.dump(data, f, indent=4)
+
+    print("Student data successfully saved to students.json")
+
+
+def generate_csv_report(students):
+    with open("data/students_report.csv", "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["ID", "Name", "Department", "Average", "Grade"])
+
+        for s in students:
+            avg = sum(s.marks) / len(s.marks)
+            grade = "A" if avg >= 85 else "B" if avg >= 70 else "C"
+            writer.writerow([s.id, s.name, s.department, f"{avg:.1f}", grade])
+
+    print("CSV Report Generated")
+
+[
+    {
+        "id": "345",
+        "name": "mohan",
+        "department": "java",
+        "semester": 1,
+        "marks": [
+            87
+        ]
+    },
+    {
+        "id": "123",
+        "name": "mahi",
+        "department": "python",
+        "semester": 1,
+        "marks": [
+            97
+        ]
+    }
+]
+ID,Name,Department,Average,Grade
+345,mohan,java,87.0,A
+123,mahi,python,97.0,A
+
+
+
