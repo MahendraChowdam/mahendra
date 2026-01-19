@@ -15,4 +15,5 @@ c1.parent()
 
 c2 = Child2()
 c2.child2()
+
 c2.parent()
