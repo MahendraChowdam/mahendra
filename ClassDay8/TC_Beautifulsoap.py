@@ -34,3 +34,4 @@ extracted_data = {
 
 with open("extracteddata.json", 'w', encoding="utf-8") as file:
     json.dump(extracted_data, file, indent=4)
+
