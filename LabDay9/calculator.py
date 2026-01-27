@@ -11,3 +11,4 @@ def div(a, b):
     if b == 0:
         raise ValueError("Division by zero not allowed")
     return a / b
+
