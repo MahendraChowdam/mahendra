@@ -31,4 +31,5 @@ log Into Website
     ${title}=    Get Title
     Title Should Be    ${title}    OrangeHRM
     Sleep    4s
+
     Close Browser
