@@ -11,4 +11,5 @@ def test_orangehrm_title_url():
 
     assert "OrangeHRM" in driver.title
 
+
     driver.quit()
