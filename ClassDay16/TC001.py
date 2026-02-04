@@ -13,4 +13,5 @@ time.sleep(5)
 driver.back()
 print("title after back", driver.title)
 driver.forward()
+
 print("title after forward", driver.title)
