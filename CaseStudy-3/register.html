@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head><title>Patient Registration</title></head>
+<body>
+<h2>Register Patient</h2>
+<form method="post" action="/api/patients">
+    <input name="id" placeholder="Patient ID"><br>
+    <input name="name" placeholder="Name"><br>
+    <input name="age" placeholder="Age"><br>
+
+    Gender:
+    <input type="radio" name="gender" value="Male">Male
+    <input type="radio" name="gender" value="Female">Female<br>
+
+    <input name="contact" placeholder="Contact"><br>
+    <input name="disease" placeholder="Disease"><br>
+
+    Doctor:
+    <select name="doctor">
+        <option>Dr. Smith</option>
+        <option>Dr. John</option>
+    </select><br><br>
+
+    <button type="submit">Register</button>
+</form>
+</body>
+</html>
