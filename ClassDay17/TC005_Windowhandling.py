@@ -12,4 +12,5 @@ windows = driver.window_handles
 for window in windows:
     driver.switch_to.window(window)
     time.sleep(5)
+
     print("title",driver.current_url)
