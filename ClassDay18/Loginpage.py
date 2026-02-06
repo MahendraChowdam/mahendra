@@ -16,4 +16,5 @@ class loginpage:
         self.driver.find_element(*self.password).send_keys(pwd)
 
     def clicklogin(self):
+
         self.driver.find_element(*self.loginbutton).click()
