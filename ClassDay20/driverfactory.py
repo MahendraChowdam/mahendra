@@ -26,3 +26,4 @@ def get_driver(browser):
 
     driver.maximize_window()
     return driver
+
