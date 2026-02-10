@@ -34,3 +34,4 @@ df["above_average"] = df["score"] > mean_score
 
 print("Final DataFrame with above_average column:")
 print(df)
+
