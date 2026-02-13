@@ -16,3 +16,4 @@ result = cursor.fetchall()
 for row in result:
     print(row)
 
+
