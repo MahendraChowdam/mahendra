@@ -33,3 +33,4 @@ plt.grid(True)
 plt.savefig("report_bar.png")    # saves bar chart
 plt.show()
 
+
