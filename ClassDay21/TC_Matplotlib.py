@@ -35,3 +35,4 @@ sizes=[60,25,15]
 plt.pie(sizes,labels=labels,autopct='%1.1f%%')
 plt.title("Browser usage")
 plt.show()
+
