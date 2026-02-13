@@ -65,3 +65,4 @@ print(f"\nSalary updated by 10% for employee ID {employee_id}")
 cursor.close()
 conn.close()
 print("\nDatabase connection closed")
+
